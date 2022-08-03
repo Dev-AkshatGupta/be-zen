@@ -2,9 +2,11 @@ import React,{useState} from "react";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import {useNotes} from "./../../contextAndReducers/NotesProvider";
 import { TextField, Button, Stack } from "@mui/material";
 const ModalToAddNotes = ({ children }) => {
-  const [value, setValue] = useState({ budget: 0, endDate: "" });
+  const [value, setValue] = useState({ content: "", title: "" });
+  const { notesState, notesDispatch } = useNotes();
   return (
     <Modal
       disablePortal
@@ -20,7 +22,7 @@ const ModalToAddNotes = ({ children }) => {
         justifyContent: "center",
       }}
       onClick={() => {
-     
+        notesDispatch({ type: "ADD_TO_NOTES_MODAL" });
       }}
     >
       <Box
@@ -37,41 +39,41 @@ const ModalToAddNotes = ({ children }) => {
         }}
       >
         <Typography id="server-modal-title" variant="h6" component="h2">
-          Add Project
+          Add Notes
         </Typography>
-        <Typography id="server-modal-description" sx={{ pt: 2 }}>
-          Add details of the Project.
-        </Typography>
+
         <Stack spacing={2}>
           <TextField
             id="standard-basic"
-            label="Project Budget"
+            label="Title"
             variant="standard"
+            value={value.title}
             onChange={(e) => {
-              setValue((prev) => ({ ...prev, budget: Number(e.target.value) }));
+              setValue((prev) => ({ ...prev, title: Number(e.target.value) }));
             }}
           />
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            value={value.endDate}
-        
+          <TextField
+            id="standard-basic"
+            label="content"
+            variant="standard"
+            value={value.content}
             onChange={(e) => {
-              setValue((prev) => ({ ...prev, endDate: e.target.value }));
+              setValue((prev) => ({ ...prev, content: e.target.value }));
             }}
-          ></input>
+          />
           <Button
             variant="outlined"
             onClick={() => {
+              notesDispatch({ type: "ADD_TO_NOTES_MODAL" });
             }}
           >
-            Create the Project
+            Create the Note
           </Button>
           <Button
             variant="outlined"
             color="error"
             onClick={() => {
+              notesDispatch({ type: "ADD_TO_NOTES_MODAL" });
             }}
           >
             Close

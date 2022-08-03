@@ -11,7 +11,10 @@ const NotesProvider = ({ children }) => {
       case "EDIT":
         break;
       case "STORE":
+        console.log(action.payload);
         return { ...state, notes: action.payload, isLoading: false };
+      case "ADD_TO_NOTES_MODAL":
+        return { ...state, isAddNotesModalOpen: !state.isAddNotesModalOpen };
       default:
         break;
     }
@@ -19,6 +22,7 @@ const NotesProvider = ({ children }) => {
   const [notesState, notesDispatch] = useReducer(reducer, {
     notes: [],
     isLoading: true,
+    isAddNotesModalOpen: false,
   });
 
   return (
