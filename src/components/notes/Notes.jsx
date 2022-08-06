@@ -6,7 +6,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 const Notes = ({ notesObj }) => {
-    console.log(notesObj);
+    // console.log(notesObj);
   return (
     <Grid>
       <Card sx={{ minWidth: 275, maxWidth: 300 }}>

@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import {useNotes} from "./../../contextAndReducers/NotesProvider";
 import { TextField, Button, Stack } from "@mui/material";
+import {addNotes} from "./../../utils/services";
 const ModalToAddNotes = ({ children }) => {
   const [value, setValue] = useState({ content: "", title: "" });
   const { notesState, notesDispatch } = useNotes();
@@ -49,7 +50,7 @@ const ModalToAddNotes = ({ children }) => {
             variant="standard"
             value={value.title}
             onChange={(e) => {
-              setValue((prev) => ({ ...prev, title: Number(e.target.value) }));
+              setValue((prev) => ({ ...prev, title: e.target.value }));
             }}
           />
           <TextField
@@ -74,6 +75,7 @@ const ModalToAddNotes = ({ children }) => {
             color="error"
             onClick={() => {
               notesDispatch({ type: "ADD_TO_NOTES_MODAL" });
+              addNotes(value,notesDispatch);
             }}
           >
             Close
