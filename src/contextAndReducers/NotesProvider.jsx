@@ -3,26 +3,24 @@ const NotesContextProvider = createContext();
 const useNotes = () => useContext(NotesContextProvider);
 const NotesProvider = ({ children }) => {
   const reducer = (state, action) => {
+    console.log(state);
     switch (action.type) {
-      case "ADD":
-        break;
-      case "DELETE":
-        break;
-      case "EDIT":
-        break;
-      case "STORE":
-        console.log(action.payload);
-        return { ...state, notes: action.payload, isLoading: false };
       case "ADD_TO_NOTES_MODAL":
         return { ...state, isAddNotesModalOpen: !state.isAddNotesModalOpen };
+      case "EDIT_NOTES_MODAL":
+        return {
+          ...state,
+          id: action.payload,
+          isEditNotesModalOpen: !state.isEditNotesModalOpen,
+        };
       default:
-        break;
+        return state;
     }
   };
   const [notesState, notesDispatch] = useReducer(reducer, {
-    notes: [],
-    isLoading: true,
     isAddNotesModalOpen: false,
+    isEditNotesModalOpen: false,
+    id: "",
   });
 
   return (

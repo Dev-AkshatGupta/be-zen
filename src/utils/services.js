@@ -6,23 +6,30 @@ import {
   getFirestore,
   updateDoc,
   collection,
+  deleteDoc,
+  onSnapshot,
 } from "@firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import { db } from "./../firebase";
+import app, { db } from "./../firebase";
 
 export const getAllNotes = async (dispatch) => {
   try {
-    const querySnapshot = await getDocs(collection(db, "notes"));
-
-    dispatch({
-      type: "STORE",
-      payload: querySnapshot.docs.map((item) => item.data()),
+    let result = [];
+    onSnapshot(collection(db, "notes"), (data) => {
+      // data.docs.forEach((item) => console.log(item.data()));
+      result = data.docs.map((item) => {
+        console.log(item.data());
+        return {
+          ...item.data(),
+          id: item.id,
+        };
+      });
     });
+    return result;
   } catch (error) {
     console.log(error);
   }
 };
-
 export const addNotes = async (notes, dispatch) => {
   try {
     const db = getFirestore();
@@ -38,7 +45,7 @@ export const editNotes = async (notes, dispatch) => {
     const db = getFirestore();
     const notesRef = doc(db, "notes", notes.id);
     await updateDoc(notesRef, notes);
-    dispatch({ type: "EDIT", payload: notes });
+    // dispatch({ type: "EDIT", payload: notes });
     console.log(notesRef);
   } catch (error) {
     console.log(error);
@@ -47,20 +54,5 @@ export const editNotes = async (notes, dispatch) => {
 
 export const deleteNotes = async (notes, dispatch) => {
   const db = getFirestore();
-  const notesRef = ref(db, `notes/${notes.id}`);
-  deleteObject(notesRef).then(
-    (res) => {
-      dispatch({ type: "DELETE", payload: res });
-    },
-    (error) => {
-      console.log(error);
-    }
-  );
+  await deleteDoc(doc(db, "notes", notes.id));
 };
-
-const divide=(num1=1,num2=1,callback)=>{
- const quotient=num1/num2 ;
- const reminder=num1%num2;
- callback(quotient,reminder);  
-
-}

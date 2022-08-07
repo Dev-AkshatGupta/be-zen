@@ -3,11 +3,16 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { TextField, Button, Stack } from "@mui/material";
-
+import { editNotes } from "./../../utils/services";
+import { useNotes } from "./../../contextAndReducers/NotesProvider";
 const ModalToEditNotes = () => {
-
-  const [value, setValue] = useState();
-  
+  const { notesState, notesDispatch } = useNotes();
+  const [value, setValue] = useState({
+    content: "",
+    title: "",
+    isPinned: false,
+    id: notesState.id,
+  });
   return (
     <Modal
       disablePortal
@@ -23,7 +28,7 @@ const ModalToEditNotes = () => {
         justifyContent: "center",
       }}
       onClick={() => {
-       
+        notesDispatch({ type: "EDIT_NOTES_MODAL", id: "" });
       }}
     >
       <Box
@@ -48,41 +53,44 @@ const ModalToEditNotes = () => {
         <Stack spacing={2}>
           <TextField
             id="standard-basic"
-            label="Project Budget"
+            label="Title"
             variant="standard"
-            value={value.budget}
+            value={value.title}
             onChange={(e) => {
-              setValue((prev) => ({ ...prev, budget: e.target.value }));
+              setValue((prev) => ({ ...prev, title: e.target.value }));
             }}
           />
-
-          <input
-            type="date"
-            id="start"
-            name="trip-start"
-            value={value.endDate}
-        
+          <TextField
+            id="standard-basic"
+            label="content"
+            variant="standard"
+            value={value.content}
             onChange={(e) => {
-              setValue((prev) => ({ ...prev, endDate: e.target.value }));
+              setValue((prev) => ({ ...prev, content: e.target.value }));
             }}
-          ></input>
-
+          />
           <Button
             variant="outlined"
             onClick={() => {
-        
+              notesDispatch({ type: "EDIT_NOTES_MODAL", payload: "" });
+              editNotes(value);
             }}
           >
-            Edit
+            Create the Note
           </Button>
           <Button
-            color="error"
             variant="outlined"
+            color="error"
             onClick={() => {
-             
+              // notesDispatch({ type: "Edit_NOTES_MODAL", payload: "" });
+              console.log("edited clicked modal");
+              notesDispatch({
+                type: "EDIT_NOTES_MODAL",
+                payload: "",
+              });
             }}
           >
-            Cancel
+            Close
           </Button>
         </Stack>
       </Box>
