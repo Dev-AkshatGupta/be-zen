@@ -55,7 +55,7 @@ const Notes = ({ notesObj }) => {
           <Button
             size="small"
             onClick={() => {
-              notesDispatch({ type: "EDIT_NOTES_MODAL", payload: notesObj.id });
+              notesDispatch({ type: "EDIT_NOTES_MODAL", payload: notesObj });
             }}
           >
             <Pencil />

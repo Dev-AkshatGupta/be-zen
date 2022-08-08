@@ -10,7 +10,9 @@ const NotesProvider = ({ children }) => {
       case "EDIT_NOTES_MODAL":
         return {
           ...state,
-          id: action.payload,
+          id: action.payload.id,
+          content: action.payload.content,
+          title: action.payload.title,
           isEditNotesModalOpen: !state.isEditNotesModalOpen,
         };
       default:
@@ -21,6 +23,8 @@ const NotesProvider = ({ children }) => {
     isAddNotesModalOpen: false,
     isEditNotesModalOpen: false,
     id: "",
+    content: "",
+    title: "",
   });
 
   return (

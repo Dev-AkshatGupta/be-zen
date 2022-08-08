@@ -33,8 +33,8 @@ export const getAllNotes = async (dispatch) => {
 export const addNotes = async (notes, dispatch) => {
   try {
     const db = getFirestore();
-    const docRef = await addDoc(collection(db, "notes"), notes);
-    console.log(docRef);
+    const time = new Date().getTime();
+    await addDoc(collection(db, "notes"), { ...notes, time });
   } catch (error) {
     console.log(error);
   }
@@ -44,7 +44,8 @@ export const editNotes = async (notes, dispatch) => {
   try {
     const db = getFirestore();
     const notesRef = doc(db, "notes", notes.id);
-    await updateDoc(notesRef, notes);
+    const time = new Date().getTime();
+    await updateDoc(notesRef, { ...notes, time });
     // dispatch({ type: "EDIT", payload: notes });
     console.log(notesRef);
   } catch (error) {

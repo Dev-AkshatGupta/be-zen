@@ -8,8 +8,8 @@ import { useNotes } from "./../../contextAndReducers/NotesProvider";
 const ModalToEditNotes = () => {
   const { notesState, notesDispatch } = useNotes();
   const [value, setValue] = useState({
-    content: "",
-    title: "",
+    content: notesState.content,
+    title: notesState.title,
     isPinned: false,
     id: notesState.id,
   });
